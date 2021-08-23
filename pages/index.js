@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import data from "../utils/data";
+
 import Layout from "../components/Layout";
 import NextLink from "next/link";
 import {
@@ -13,17 +13,22 @@ import {
 	Grid,
 	Typography,
 } from "@material-ui/core";
+import db from "../utils/db";
+import Product from "../models/Product";
 
-export default function Home() {
+export default function Home(props) {
+	//assigning the data as props to our products
+	//Data fetched from server is passed as props to home component ans assigned to products
+	const { products } = props;
 	return (
 		<Layout>
 			<div>
 				<h1>Products</h1>
 				<Grid container spacing={3}>
-					{data.products.map((product) => (
+					{products.map((product) => (
 						<Grid item md={2} key={product.name}>
 							<Card>
-								<NextLink href={`/product/${product.slug}`} passHref>
+								<NextLink href={`/products/${product.slug}`} passHref>
 									{/*The above converts the cardactionarea into an anchor  */}
 									<CardActionArea>
 										{/*Anything in this is clickable*/}
@@ -51,4 +56,18 @@ export default function Home() {
 			</div>
 		</Layout>
 	);
+}
+
+//fetching data from server side and passing it to thr home component
+export async function getServerSideProps() {
+	await db.connect();
+	//fetching   all products
+	const products = await Product.find({}).lean();
+	await db.disconnect();
+	return {
+		props: {
+			//for each item  we call the conveet method to convert it into js object which only contains primary data types
+			products: products.map(db.convertDocToObj),
+		},
+	};
 }

@@ -51,7 +51,7 @@ const data = {
 		{
 			name: "Classic Shirt",
 			slug: "classic-shirt",
-			category: "Pant",
+			category: "Clothing and Acccesories",
 			image: "/images/shirt_3.jpg",
 			price: "70",
 			brand: "Nike",
@@ -63,7 +63,7 @@ const data = {
 		{
 			name: "Nike shoe",
 			slug: "nike-shoe",
-			category: "Pant",
+			category: "Clothing and Acccesories",
 			image: "/images/Nike shoe.jpg",
 			price: "70",
 			brand: "Nike",
@@ -75,7 +75,7 @@ const data = {
 		{
 			name: "Adidas shoe",
 			slug: "adidas shoe",
-			category: "Pant",
+			category: "Clothing and Acccesories",
 			image: "/images/adidas.jpg",
 			price: "70",
 			brand: "Nike",
@@ -87,7 +87,7 @@ const data = {
 		{
 			name: "Wallabees",
 			slug: "wallabees-shoes",
-			category: "Pant",
+			category: "Clothing and Acccesories",
 			image: "/images/Wallabees.jpg",
 			price: "70",
 			brand: "Nike",
@@ -99,7 +99,7 @@ const data = {
 		{
 			name: "Bluetooth speakers",
 			slug: "speaker",
-			category: "Pant",
+			category: "Electronics",
 			image: "/images/speaker.jpg",
 			price: "70",
 			brand: "Nike",
@@ -112,7 +112,7 @@ const data = {
 		{
 			name: "Delron rice cooker",
 			slug: "rice-cooker",
-			category: "Pant",
+			category: "Appliances",
 			image: "/images/cooker.jpg",
 			price: "70",
 			brand: "Nike",
@@ -123,7 +123,7 @@ const data = {
 		},
 		{
 			name: "Hisense Electric kettle",
-			slug: "classic-shirt",
+			slug: "kettle",
 			category: "Appliance",
 			image: "/images/kettle.jpg",
 			price: "70",
@@ -135,8 +135,8 @@ const data = {
 		},
 		{
 			name: "Nasco Blender",
-			slug: "classic-shirt",
-			category: "Pant",
+			slug: " blender",
+			category: "Appliances",
 			image: "/images/blender.jpg",
 			price: "70",
 			brand: "Nike",

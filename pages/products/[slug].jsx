@@ -1,5 +1,5 @@
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../../components/Layout";
 import data from "../../utils/data";
 import NextLink from "next/link";
@@ -14,18 +14,38 @@ import {
 } from "@material-ui/core";
 import useStyle from "../../utils/style";
 import Image from "next/image";
+import db from "../../utils/db";
+import Product from "../../models/Product";
+import axios from "axios";
+import { Store } from "../../utils/Store";
 
-const ProductScreen = () => {
+const ProductScreen = (props) => {
+	const { dispatch } = useContext(Store);
+	//fetch data from server side
+	const { product } = props;
 	const classes = useStyle();
 	const router = useRouter();
 	//getting the slug
-	const { slug } = router.query;
+	//const { slug } = router.query;
 	//getting the prodcut from  data.js
-	const product = data.products.find((a) => a.slug == slug);
+	//const product = data.products.find((a) => a.slug == slug);
 	//if product isn't found
 	if (!product) {
 		return <div>Product Not found </div>;
 	}
+
+	//function to handle the number of items cart
+	const addTocartHandler = async () => {
+		//get product from the backened
+		const { data } = await axios.get(`api/products/${product._id}`);
+		//check to see if item is out of stock
+		if (data.countInStock <= 0) {
+			window.alert("sorry, Product is out of stock");
+			return;
+		}
+		//Establishing updation of state using dispatch
+		dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
+	};
 
 	return (
 		<Layout title={product.name} description={product.description}>
@@ -100,7 +120,12 @@ const ProductScreen = () => {
 							</ListItem>
 
 							<ListItem>
-								<Button fullWidth variant="contained" color="primary">
+								<Button
+									fullWidth
+									variant="contained"
+									color="primary"
+									onClick={addTocartHandler}
+								>
 									Add To Cart
 								</Button>
 							</ListItem>
@@ -111,5 +136,21 @@ const ProductScreen = () => {
 		</Layout>
 	);
 };
+
+//fetch product details from the server
+export async function getServerSideProps(context) {
+	const { params } = context;
+	const { slug } = params;
+	await db.connect();
+	//fetching only one product
+	const product = await Product.findOne({ slug }).lean();
+	await db.disconnect();
+	return {
+		props: {
+			//item will be  converted to js object which only contains primary data types
+			product: db.convertDocToObj(product),
+		},
+	};
+}
 
 export default ProductScreen;
