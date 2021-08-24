@@ -3,14 +3,16 @@ import Head from "next/dist/shared/lib/head";
 import NextLink from "next/link";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
+
 import {
 	AppBar,
 	Container,
-	createMuiTheme,
+	createTheme,
 	CssBaseline,
 	Link,
 	ThemeProvider,
 	Toolbar,
+	Badge,
 	Typography,
 } from "@material-ui/core";
 import useStyle from "../utils/style";
@@ -21,9 +23,9 @@ import { Store } from "../utils/Store";
 const Layout = ({ title, description, children }) => {
 	const { state, dispatch } = useContext(Store);
 	// deconstructing dark mode from state
-	const { darkMode } = state;
+	const { darkMode, cart } = state;
 
-	const theme = createMuiTheme({
+	const theme = createTheme({
 		typography: {
 			h1: {
 				fontSize: "1.6rem",
@@ -61,7 +63,7 @@ const Layout = ({ title, description, children }) => {
 					<Toolbar>
 						<NextLink href="/" passHref>
 							<Link>
-								<Typography className={classes.brand}>Steaman</Typography>
+								<Typography className={classes.brand}>Home</Typography>
 							</Link>
 						</NextLink>
 
@@ -70,7 +72,16 @@ const Layout = ({ title, description, children }) => {
 							<NextLink href="/cart" passHref>
 								<Link>
 									<ShoppingCartIcon />
-									Cart
+									{cart.cartItems.length > 0 ? (
+										<Badge
+											color="secondary"
+											badgeContent={cart.cartItems.length}
+										>
+											Cart
+										</Badge>
+									) : (
+										"Cart"
+									)}
 								</Link>
 							</NextLink>
 

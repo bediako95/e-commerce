@@ -1,4 +1,5 @@
 import { useRouter } from "next/dist/client/router";
+import "bootstrap/dist/css/bootstrap.css";
 import React, { useContext } from "react";
 import Layout from "../../components/Layout";
 import data from "../../utils/data";
@@ -20,7 +21,7 @@ import axios from "axios";
 import { Store } from "../../utils/Store";
 
 const ProductScreen = (props) => {
-	const { dispatch } = useContext(Store);
+	const { state, dispatch } = useContext(Store);
 	//fetch data from server side
 	const { product } = props;
 	const classes = useStyle();
@@ -37,14 +38,28 @@ const ProductScreen = (props) => {
 	//function to handle the number of items cart
 	const addTocartHandler = async () => {
 		//get product from the backened
-		const { data } = await axios.get(`api/products/${product._id}`);
+		const { data } = await axios.get(`/api/product/${product._id}`);
 		//check to see if item is out of stock
 		if (data.countInStock <= 0) {
 			window.alert("sorry, Product is out of stock");
 			return;
 		}
+		//add to cart button update functionality in the product details page
+		const existItem = state.cart.cartItems.find((x) => x._id == product._id);
+		//if quantity exists then increase it, else make quantity 1
+		const quantity = existItem ? existItem.quantity + 1 : 1;
+		//checking if count in stock is less than the new quantity, then output a message
+		if (data.countInStock < quantity) {
+			window.alert("sorry, Product is out of stock");
+			return;
+		}
 		//Establishing updation of state using dispatch
-		dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
+		dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+		//redirect user to the cart page
+	};
+
+	const buyNow = () => {
+		router.push("/cart");
 	};
 
 	return (
@@ -127,6 +142,16 @@ const ProductScreen = (props) => {
 									onClick={addTocartHandler}
 								>
 									Add To Cart
+								</Button>
+							</ListItem>
+							<ListItem>
+								<Button
+									fullWidth
+									variant="contained"
+									className="bg-success"
+									onClick={buyNow}
+								>
+									Buy Now
 								</Button>
 							</ListItem>
 						</List>

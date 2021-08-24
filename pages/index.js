@@ -15,11 +15,40 @@ import {
 } from "@material-ui/core";
 import db from "../utils/db";
 import Product from "../models/Product";
+import axios from "axios";
+import { useContext } from "react";
+import { useRouter } from "next/dist/client/router";
+import { Store } from "../utils/Store";
 
 export default function Home(props) {
+	const { state, dispatch } = useContext(Store);
+	const router = useRouter();
 	//assigning the data as props to our products
 	//Data fetched from server is passed as props to home component ans assigned to products
 	const { products } = props;
+
+	const addTocartHandler = async (product) => {
+		//get product from the backened
+		const { data } = await axios.get(`/api/product/${product._id}`);
+		//check to see if item is out of stock
+		if (data.countInStock <= 0) {
+			window.alert("sorry, Product is out of stock");
+			return;
+		}
+
+		//getting quantity from the state and increase quantity by 1
+		const existItem = state.cart.cartItems.find((x) => x._id == product._id);
+		//if quantity exists then increase it, else make quantity 1
+		const quantity = existItem ? existItem.quantity + 1 : 1;
+		if (data.countInStock < quantity) {
+			window.alert("sorry, Product is out of stock");
+			return;
+		}
+		//Establishing updation of state using dispatch
+		dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+		//redirect user to the cart page
+	};
+
 	return (
 		<Layout>
 			<div>
@@ -45,7 +74,12 @@ export default function Home(props) {
 								</NextLink>
 								<CardActions>
 									<Typography>GHC{product.price}</Typography>
-									<Button size="small" color="primary">
+
+									<Button
+										size="small"
+										color="primary"
+										onClick={() => addTocartHandler(product)}
+									>
 										Add to Cart
 									</Button>
 								</CardActions>
