@@ -37,17 +37,12 @@ const ProductScreen = (props) => {
 
 	//function to handle the number of items cart
 	const addTocartHandler = async () => {
-		//get product from the backened
-		const { data } = await axios.get(`/api/product/${product._id}`);
-		//check to see if item is out of stock
-		if (data.countInStock <= 0) {
-			window.alert("sorry, Product is out of stock");
-			return;
-		}
 		//add to cart button update functionality in the product details page
 		const existItem = state.cart.cartItems.find((x) => x._id == product._id);
 		//if quantity exists then increase it, else make quantity 1
 		const quantity = existItem ? existItem.quantity + 1 : 1;
+		//get product from the backened
+		const { data } = await axios.get(`/api/product/${product._id}`);
 		//checking if count in stock is less than the new quantity, then output a message
 		if (data.countInStock < quantity) {
 			window.alert("sorry, Product is out of stock");

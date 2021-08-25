@@ -23,8 +23,10 @@ import NextLink from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
-
+import { Router } from "@material-ui/icons";
+import { useRouter } from "next/router";
 const CartScreen = () => {
+	const router = useRouter();
 	const { state, dispatch } = useContext(Store);
 	const {
 		cart: { cartItems },
@@ -46,6 +48,11 @@ const CartScreen = () => {
 	const removeItemHandler = (item) => {
 		dispatch({ type: "CART_REMOVE_ITEM", payload: item });
 	};
+	//checkout button functionality redirecting userds to the login page
+	const checkOutHandler = () => {
+		router.push("/shipping");
+	};
+
 	return (
 		<Layout title="Shopping Cart">
 			<Typography component="h1" variant="h1">
@@ -151,7 +158,12 @@ const CartScreen = () => {
 									</Typography>
 								</ListItem>
 								<ListItem>
-									<Button variant="contained" color="primary" fullWidth>
+									<Button
+										variant="contained"
+										color="primary"
+										fullWidth
+										onClick={checkOutHandler}
+									>
 										Check Out
 									</Button>
 								</ListItem>

@@ -28,18 +28,12 @@ export default function Home(props) {
 	const { products } = props;
 
 	const addTocartHandler = async (product) => {
-		//get product from the backened
-		const { data } = await axios.get(`/api/product/${product._id}`);
-		//check to see if item is out of stock
-		if (data.countInStock <= 0) {
-			window.alert("sorry, Product is out of stock");
-			return;
-		}
-
 		//getting quantity from the state and increase quantity by 1
 		const existItem = state.cart.cartItems.find((x) => x._id == product._id);
 		//if quantity exists then increase it, else make quantity 1
 		const quantity = existItem ? existItem.quantity + 1 : 1;
+		//get product from the backened
+		const { data } = await axios.get(`/api/product/${product._id}`);
 		if (data.countInStock < quantity) {
 			window.alert("sorry, Product is out of stock");
 			return;
