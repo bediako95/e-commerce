@@ -5,13 +5,19 @@ const data = {
 		{
 			name: "John",
 			email: "admin@example.com",
-			password: bcrypt.hashSync("12345"),
+			password: bcrypt.hashSync("1234567"),
 			isAdmin: true,
 		},
 		{
 			name: "Jane",
 			email: "user@example.com",
-			password: bcrypt.hashSync("12345"),
+			password: bcrypt.hashSync("1234567"),
+			isAdmin: false,
+		},
+		{
+			name: "Yaw",
+			email: "yaw@example.com",
+			password: bcrypt.hashSync("1234567"),
 			isAdmin: false,
 		},
 	],
@@ -19,13 +25,13 @@ const data = {
 	//products data
 	products: [
 		{
-			name: "Free shirts",
+			name: "Free shirt",
 			slug: "free-shirt",
 			category: "Shirts",
 			image: "/images/shirt_1.jpg",
-			price: 70,
+			price: 80,
 			brand: "Polo",
-			rating: 5.0,
+			rating: 4.0,
 			numReviews: 10,
 			countInStock: 15,
 			description: "A popular shirt",

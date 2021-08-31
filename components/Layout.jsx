@@ -12,18 +12,27 @@ import {
 	Link,
 	ThemeProvider,
 	Toolbar,
+	Menu,
 	Badge,
 	Typography,
+	List,
+	Button,
+	MenuList,
+	MenuItem,
 } from "@material-ui/core";
 import useStyle from "../utils/style";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import { useContext } from "react";
 import { Store } from "../utils/Store";
+import Cookies from "js-cookie";
+import router, { useRouter } from "next/router";
+import { useState } from "react";
 
 const Layout = ({ title, description, children }) => {
+	const router = useRouter();
 	const { state, dispatch } = useContext(Store);
 	// deconstructing dark mode from state
-	const { darkMode, cart } = state;
+	const { cart, userInfor } = state;
 
 	const theme = createTheme({
 		typography: {
@@ -39,7 +48,6 @@ const Layout = ({ title, description, children }) => {
 			},
 		},
 		palette: {
-			type: darkMode ? "dark" : "light",
 			primary: {
 				main: "#f0c000",
 			},
@@ -49,6 +57,27 @@ const Layout = ({ title, description, children }) => {
 		},
 	});
 	const classes = useStyle();
+
+	//login menu click functionality
+	const [anchorEl, setAnchorEl] = useState(null);
+	const LoginClick = (e) => {
+		setAnchorEl(e.currentTarget);
+	};
+
+	//handler to close login menu
+	const loginMenuCloseHandler = () => {
+		setAnchorEl(null);
+	};
+
+	//closing the menu functionality
+	const logoutClickHandler = () => {
+		setAnchorEl(null);
+		dispatch({ type: "USER_LOGOUT" });
+		Cookies.remove("userInfor");
+		Cookies.remove("cartItems");
+		//rediretcing user to home page
+		router.push("/");
+	};
 	return (
 		<div>
 			<Head>
@@ -71,7 +100,6 @@ const Layout = ({ title, description, children }) => {
 						<div>
 							<NextLink href="/cart" passHref>
 								<Link>
-									<ShoppingCartIcon />
 									{cart.cartItems.length > 0 ? (
 										<Badge
 											color="secondary"
@@ -82,15 +110,43 @@ const Layout = ({ title, description, children }) => {
 									) : (
 										"Cart"
 									)}
+									<ShoppingCartIcon />
 								</Link>
 							</NextLink>
-
-							<NextLink href="/login" passHref>
-								<Link>
-									<PersonIcon />
-									Login
-								</Link>
-							</NextLink>
+							{/*If user information exist then display a button with the user's name else show the login link*/}
+							{userInfor ? (
+								//Drop down menu for user logged in
+								<>
+									<Button
+										aria-controls="simple-menu"
+										aria-haspopup="true"
+										onClick={LoginClick}
+										className={classes.navButton}
+									>
+										{userInfor.name}
+									</Button>
+									<Menu
+										id="simple-menu"
+										anchorEl={anchorEl}
+										keepMounted
+										open={Boolean(anchorEl)}
+										onClose={loginMenuCloseHandler}
+									>
+										<MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
+										<MenuItem onClick={loginMenuCloseHandler}>
+											My account
+										</MenuItem>
+										<MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+									</Menu>
+								</>
+							) : (
+								<NextLink href="/login" passHref>
+									<Link>
+										<PersonIcon />
+										Login
+									</Link>
+								</NextLink>
+							)}
 						</div>
 					</Toolbar>
 				</AppBar>

@@ -1,7 +1,5 @@
-import { Star } from "@material-ui/icons";
 import { createContext, useReducer } from "react";
 import Cookies from "js-cookie";
-
 export const Store = createContext();
 
 const initialState = {
@@ -11,7 +9,19 @@ const initialState = {
 		cartItems: Cookies.get("cartItems")
 			? JSON.parse(Cookies.get("cartItems"))
 			: [],
+		shippingAddress: Cookies.get("shippingAddress")
+			? JSON.parse(Cookies.get("shippingAddress"))
+			: {},
+		paymentMethod: Cookies.get("paymentMethod")
+			? JSON.parse(Cookies.get("paymentMethod"))
+			: "",
 	},
+
+	//Fetching user's infor from the cookie
+	//convert that to a js object
+	userInfor: Cookies.get("userInfor")
+		? JSON.parse(Cookies.get("userInfor"))
+		: null,
 };
 
 function reducer(state, action) {
@@ -50,6 +60,39 @@ function reducer(state, action) {
 			//setting cookie to save our deleted  items
 			Cookies.set("cartItems", JSON.stringify(cartItems));
 			return { ...state, cart: { ...state.cart, cartItems } };
+		}
+
+		case "USER_LOGIN":
+			//returning current state and updating user's information
+			return { ...state, userInfor: action.payload };
+
+		case "USER_LOGOUT": {
+			//removing user and clearing cart
+			return {
+				...state,
+				userInfor: null,
+				cart: { cartItems: [], shipppingAddress: {}, paymentMethod: "" },
+			};
+		}
+		case "SAVE_PAYMENT_METHOD": {
+			return {
+				...state,
+				cart: { ...state.cart, paymentMethod: action.payload },
+			};
+		}
+
+		case "CART_CLEAR":
+			return {
+				...state,
+				cart: { ...state.cart, cartItems: [] },
+			};
+
+		case "SAVE_SHIPPING_ADDRESS": {
+			//returning current state and updating user's shipping information
+			return {
+				...state,
+				cart: { ...state.cart, shippingAddress: action.payload },
+			};
 		}
 		default:
 			return state;

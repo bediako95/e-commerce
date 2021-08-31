@@ -25,8 +25,10 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import { Router } from "@material-ui/icons";
 import { useRouter } from "next/router";
+import useStyle from "../utils/style";
 const CartScreen = () => {
 	const router = useRouter();
+	const classes = useStyle();
 	const { state, dispatch } = useContext(Store);
 	const {
 		cart: { cartItems },
@@ -55,22 +57,30 @@ const CartScreen = () => {
 
 	return (
 		<Layout title="Shopping Cart">
-			<Typography component="h1" variant="h1">
+			<Typography component="h1" variant="h1" className={classes.h3}>
 				Shopping cart
 			</Typography>
 			{/* if cart is empty*/}
 			{cartItems.length === 0 ? (
-				<div>
+				<div className={classes.h1}>
 					<img
-						style={{ width: 300, height: 300 }}
+						className={classes.cart_image}
 						src="/images/shopping.png"
 						alt=""
 					/>
-					<div>
-						Cart is empty.
-						<NextLink href="/" passHref>
-							<Button className="bg-success text-light"> Go shopping</Button>
-						</NextLink>
+					<div className="m-2">
+						<strong style={{ fontSize: 20 }}>Your cart is empty!.</strong>
+						<div>
+							<NextLink href="/" passHref>
+								<Button
+									className="bg-success text-light m-4 p-2"
+									style={{ width: 250 }}
+								>
+									{" "}
+									Go shopping
+								</Button>
+							</NextLink>
+						</div>
 					</div>
 				</div>
 			) : (

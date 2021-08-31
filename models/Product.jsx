@@ -1,3 +1,4 @@
+//db for products
 import { Mongoose } from "mongoose";
 const mongoose = require("mongoose");
 

@@ -35,7 +35,7 @@ const useStyle = makeStyles({
 		maxWidth: 700,
 		margin: "auto",
 		padding: 40,
-		marginTop: 100,
+		marginTop: 30,
 		boxShadow: 4,
 		marginBottom: 100,
 	},
@@ -58,6 +58,30 @@ const useStyle = makeStyles({
 	h2: {
 		margin: "auto",
 		marginTop: 40,
+	},
+	navButton: {
+		color: "white",
+		textTransform: "initial",
+		borderRadius: 100,
+	},
+	transparentBackground: {
+		backgroundColor: "transparent",
+	},
+	error: {
+		color: "#f04040",
+	},
+	cart_image: {
+		width: 200,
+		height: 200,
+		textAlign: "center",
+		alignItems: "center",
+	},
+	h3: {
+		textAlign: "center",
+		alignItems: "center",
+		marginTop: 100,
+		margin: "auto",
+		marginBottom: 20,
 	},
 });
 

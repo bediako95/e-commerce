@@ -1,9 +1,9 @@
 //creating api to return list of products from our db
 import nc from "next-connect";
-import Product from "../../models/Product";
 import db from "../../utils/db";
 import data from "../../utils/data";
-import User from "../../models/Users";
+import User from "../../models/User";
+import Product from "../../models/Product";
 
 const handler = nc();
 handler.get(async (req, res) => {

@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import { useEffect } from "react";
 import { StoreProvider } from "../utils/Store";
+import { SnackbarProvider } from "notistack";
 //This functional component uses the Store Provider
 
 function MyApp({ Component, pageProps }) {
@@ -12,9 +13,12 @@ function MyApp({ Component, pageProps }) {
 		return () => {};
 	}, []);
 	return (
-		<StoreProvider>
-			<Component {...pageProps} />
-		</StoreProvider>
+		//The snack bar provider helps us display notification easily
+		<SnackbarProvider anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+			<StoreProvider>
+				<Component {...pageProps} />
+			</StoreProvider>
+		</SnackbarProvider>
 	);
 }
 

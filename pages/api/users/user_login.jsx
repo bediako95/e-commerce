@@ -26,14 +26,14 @@ handler.post(async (req, res) => {
 
 		res.send({
 			token,
-			_id: User._id,
+			_id: user._id,
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
 		});
 		//outputing error message if login fails
 	} else {
-		res.status(401).send({ message: "Invalid user or password" });
+		res.status(401).send({ message: "Invalid email or password" });
 	}
 });
 

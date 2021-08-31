@@ -1,10 +1,10 @@
 // function for user authentiaction
 import jwt from "jsonwebtoken";
-import User from "../models/User";
+import decode from "jsonwebtoken/decode";
 
 //defining signToken function
 
-const signToken = () => {
+const signToken = (user) => {
 	return jwt.sign(
 		{
 			_id: user._id,
@@ -21,4 +21,24 @@ const signToken = () => {
 	);
 };
 
-export { signToken };
+const isAuth = async (req, res, next) => {
+	const { authorization } = req.headers;
+
+	if (authorization) {
+		//get token from authorization
+		const token = authorization.slice(7, authorization.length);
+		jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+			if (err) {
+				res.status(401).send({ message: "Token is not valid" });
+			} else {
+				//assigning the decoded value(user's id, name, isAdmin, email) to the req.user
+				req.user = decode;
+				next();
+			}
+		});
+	} else {
+		res.status(401).send({ message: "Token is not supplied" });
+	}
+};
+
+export { signToken, isAuth };
