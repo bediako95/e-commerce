@@ -1,10 +1,12 @@
 //Page to show order history
 import {
+	Button,
 	Card,
 	Grid,
 	Link,
 	List,
 	ListItem,
+	ListItemText,
 	Table,
 	TableBody,
 	TableCell,
@@ -23,6 +25,7 @@ import { getError } from "../utils/error";
 import { Store } from "../utils/Store";
 import { CircularProgress } from "@material-ui/core";
 import useStyle from "../utils/style";
+import NextLink from "next/link";
 
 function reducer(state, action) {
 	switch (action.type) {
@@ -91,7 +94,24 @@ function Order_history() {
 		<Layout title="Order History">
 			<Grid container spacing={5}>
 				<Grid item md={3} xs={12}>
-					<Card className={classes.section}></Card>
+					<Card className={classes.section}>
+						{/*Side bar on the left */}
+						<List>
+							<NextLink href="/profile" passHref>
+								{/*Button to be rendered as an anchor */}
+								<ListItem buttton component="a">
+									<ListItemText primary="User Profile"></ListItemText>
+								</ListItem>
+							</NextLink>
+
+							<NextLink href="/order_history" passHref>
+								{/*Button to be rendered as an anchor */}
+								<ListItem selected buttton component="a">
+									<ListItemText primary="Order History"></ListItemText>
+								</ListItem>
+							</NextLink>
+						</List>
+					</Card>
 				</Grid>
 
 				{/**Order history section */}
@@ -126,7 +146,29 @@ function Order_history() {
 
 											<TableBody>
 												{orders.map((order) => (
-													<TableRow></TableRow>
+													<TableRow key={order._id}>
+														{/***Id table cell to only show last 4 dgits */}
+														<TableCell>{order._id.substring(20, 24)}</TableCell>
+														<TableCell>{order.createdAt}</TableCell>
+														<TableCell>{order.totalPrice}</TableCell>
+														<TableCell>
+															{order.isPaid
+																? `paid at ${order.paidAt}`
+																: `not paid`}
+														</TableCell>
+														<TableCell>
+															{order.isDelivered
+																? `delivered at ${order.deliveredAt}`
+																: `not delivered`}
+														</TableCell>
+														<TableCell>
+															<NextLink href={`/order/${order._id}`} passHref>
+																<Button variant="contained" color="primary">
+																	Details
+																</Button>
+															</NextLink>
+														</TableCell>
+													</TableRow>
 												))}
 											</TableBody>
 										</Table>
@@ -141,4 +183,4 @@ function Order_history() {
 	);
 }
 
-export default dynamicc(() => Promise.resolve(Order_history), { ssr: false });
+export default dynamic(() => Promise.resolve(Order_history), { ssr: false });

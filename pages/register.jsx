@@ -70,6 +70,9 @@ const Register = () => {
 
 			Cookies.set("userInfor", data);
 
+			//success notification
+			enqueueSnackbar("Registration Successful", { variant: "success" });
+
 			//redirecting user
 			router.push(redirect || "/"); //if redirect is null, then direct user to home screen
 		} catch (err) {

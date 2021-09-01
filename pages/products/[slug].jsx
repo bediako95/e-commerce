@@ -19,6 +19,7 @@ import db from "../../utils/db";
 import Product from "../../models/Product";
 import axios from "axios";
 import { Store } from "../../utils/Store";
+import { Alert } from "@material-ui/lab";
 
 const ProductScreen = (props) => {
 	const { state, dispatch } = useContext(Store);
@@ -123,7 +124,11 @@ const ProductScreen = (props) => {
 									</Grid>
 									<Grid item xs={6}>
 										<Typography>
-											{product.countInStock > 0 ? "In stock" : "Unavailable"}
+											{product.countInStock > 0 ? (
+												<Alert severity="success">In stock</Alert>
+											) : (
+												<Alert severity="error">Unavailable</Alert>
+											)}
 										</Typography>
 									</Grid>
 								</Grid>

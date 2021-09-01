@@ -3,6 +3,7 @@ import Head from "next/dist/shared/lib/head";
 import NextLink from "next/link";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import {
 	AppBar,
@@ -20,6 +21,7 @@ import {
 	MenuList,
 	MenuItem,
 } from "@material-ui/core";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import useStyle from "../utils/style";
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 import { useContext } from "react";
@@ -64,9 +66,22 @@ const Layout = ({ title, description, children }) => {
 		setAnchorEl(e.currentTarget);
 	};
 
-	//handler to close login menu
-	const loginMenuCloseHandler = () => {
+	//handler to redirect us to the order history page
+	const loginMenuCloseHandler = (e, redirect) => {
 		setAnchorEl(null);
+		//if redirect has a value
+		if (redirect) {
+			router.push(redirect);
+		}
+	};
+
+	//account drop down menu
+	const loginMenuHandler = (e, redirect) => {
+		setAnchorEl(null);
+		//if redirect has a value
+		if (redirect) {
+			router.push(redirect);
+		}
 	};
 
 	//closing the menu functionality
@@ -124,6 +139,7 @@ const Layout = ({ title, description, children }) => {
 										className={classes.navButton}
 									>
 										{userInfor.name}
+										<ArrowDropDownIcon />
 									</Button>
 									<Menu
 										id="simple-menu"
@@ -132,21 +148,82 @@ const Layout = ({ title, description, children }) => {
 										open={Boolean(anchorEl)}
 										onClose={loginMenuCloseHandler}
 									>
-										<MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
-										<MenuItem onClick={loginMenuCloseHandler}>
-											My account
+										<MenuItem
+											onClick={(e) => loginMenuCloseHandler(e, "/profile")}
+										>
+											Profile
+										</MenuItem>
+										<MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+										<MenuItem
+											onClick={(e) =>
+												loginMenuCloseHandler(e, "/order_history")
+											}
+										>
+											Order History
 										</MenuItem>
 										<MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
 									</Menu>
 								</>
 							) : (
-								<NextLink href="/login" passHref>
-									<Link>
+								<>
+									<Button
+										aria-controls="simple-menu"
+										aria-haspopup="true"
+										onClick={LoginClick}
+										className={classes.navButton}
+									>
+										Account
 										<PersonIcon />
-										Login
-									</Link>
-								</NextLink>
+										<ArrowDropDownIcon />
+									</Button>
+
+									<Menu
+										id="simple-menu"
+										anchorEl={anchorEl}
+										keepMounted
+										open={Boolean(anchorEl)}
+										onClose={loginMenuHandler}
+									>
+										<MenuItem onClick={(e) => loginMenuHandler(e, "/login")}>
+											Login
+										</MenuItem>
+
+										<MenuItem onClick={(e) => loginMenuHandler(e, "/register")}>
+											Sign up
+										</MenuItem>
+										<MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+									</Menu>
+								</>
 							)}
+
+							<>
+								<Button
+									aria-controls="simple-menu"
+									aria-haspopup="true"
+									onClick={LoginClick}
+									className={classes.navButton}
+								>
+									Support
+									<HelpOutlineIcon />
+								</Button>
+
+								<Menu
+									id="simple-menu"
+									anchorEl={anchorEl}
+									keepMounted
+									open={Boolean(anchorEl)}
+									onClose={loginMenuHandler}
+								>
+									<MenuItem onClick={(e) => loginMenuHandler(e, "/")}>
+										Help
+									</MenuItem>
+
+									<MenuItem onClick={(e) => loginMenuHandler(e, "/")}>
+										Contact Support Team
+									</MenuItem>
+									<MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+								</Menu>
+							</>
 						</div>
 					</Toolbar>
 				</AppBar>

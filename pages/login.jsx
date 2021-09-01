@@ -69,7 +69,8 @@ const Login = () => {
 			//setting cookies using data from backend
 
 			Cookies.set("userInfor", JSON.stringify(data));
-
+			//success message
+			enqueueSnackbar("Login succesfully", { variant: "success" });
 			//redirecting user
 			router.push(redirect || "/"); //if redirect is null, then direct user to home screen
 		} catch (err) {

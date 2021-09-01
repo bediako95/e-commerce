@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import React, { useContext, useEffect } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 import { Store } from "../../utils/Store";
 import NextLink from "next/link";
 import Image from "next/image";

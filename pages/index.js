@@ -19,6 +19,8 @@ import axios from "axios";
 import { useContext } from "react";
 import { useRouter } from "next/dist/client/router";
 import { Store } from "../utils/Store";
+import StarIcon from "@material-ui/icons/Star";
+import Rating from "../components/Rating";
 
 export default function Home(props) {
 	const { state, dispatch } = useContext(Store);
@@ -66,6 +68,11 @@ export default function Home(props) {
 										</CardContent>
 									</CardActionArea>
 								</NextLink>
+								<Rating
+									rating={product.rating}
+									numReviews={product.numReviews}
+								></Rating>
+
 								<CardActions>
 									<Typography>GHC{product.price}</Typography>
 
