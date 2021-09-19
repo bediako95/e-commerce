@@ -1,15 +1,14 @@
-//craeting api to return list of products from our db
 import nc from "next-connect";
 import Product from "../../../models/Product";
 import db from "../../../utils/db";
 
-//handler in next connect
 const handler = nc();
+
 handler.get(async (req, res) => {
 	await db.connect();
-	const product = await Product.findById(req.query.id);
+	const categories = await Product.find().distinct("category");
 	await db.disconnect();
-	res.send(product);
+	res.send(categories);
 });
 
 export default handler;

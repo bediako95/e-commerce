@@ -1,13 +1,11 @@
-//api for order details
-
-//creating api to return list of products from our db
+//craeting api to return list of products from our db
 import nc from "next-connect";
-import Order from "../../../models/Order";
-import { isAuth } from "../../../utils/auth";
+import { isAuth } from "../../../../utils/auth";
+import Order from "../../../models/Product";
 import db from "../../../utils/db";
 
+//handler in next connect
 const handler = nc();
-//authenticated user can see this page
 handler.use(isAuth);
 handler.get(async (req, res) => {
 	await db.connect();
@@ -16,4 +14,4 @@ handler.get(async (req, res) => {
 	res.send(order);
 });
 
-export default Order;
+export default handler;

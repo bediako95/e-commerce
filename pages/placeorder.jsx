@@ -139,12 +139,6 @@ const PlaceOrder = () => {
 								{shippingAddress.city},{shippingAddress.postalCode},{""},
 								{shippingAddress.country}
 							</ListItem>
-							{/*Status of delivery*/}
-
-							<ListItem>
-								Status:
-								{isDelivered ? `delivered at ${deliveredAt}` : "not delivered"}
-							</ListItem>
 						</List>
 					</Card>
 
@@ -159,12 +153,6 @@ const PlaceOrder = () => {
 							</ListItem>
 
 							<ListItem>{paymentMethod}</ListItem>
-
-							{/*Status of Payment*/}
-							<ListItem>
-								Status:
-								{isPaid ? `paid at ${paidAt}` : "not paid yet"}
-							</ListItem>
 						</List>
 					</Card>
 

@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import Layout from "../../components/Layout";
 import data from "../../utils/data";
 import NextLink from "next/link";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {
 	Button,
 	Card,
@@ -62,11 +63,13 @@ const ProductScreen = (props) => {
 		<Layout title={product.name} description={product.description}>
 			<div className={classes.section}>
 				{/* breadcrumb can be placed here */}
-				<NextLink href="/" passHref>
-					<Link>
-						<Typography>Back to products</Typography>
-					</Link>
-				</NextLink>
+				<Breadcrumbs separator="›" aria-label="breadcrumb">
+					<NextLink href="/" passHref>
+						<Link>
+							<Typography>Steaman</Typography>
+						</Link>
+					</NextLink>
+				</Breadcrumbs>
 			</div>
 			<Grid container spacing={1}>
 				<Grid item md={6} xs={12}>
@@ -98,8 +101,10 @@ const ProductScreen = (props) => {
 							</Typography>
 						</ListItem>
 						<ListItem>
-							Description:
-							<Typography>{product.description}</Typography>
+							<Typography>
+								Description:
+								{product.description}
+							</Typography>
 						</ListItem>
 					</List>
 				</Grid>
@@ -113,7 +118,7 @@ const ProductScreen = (props) => {
 										<Typography>Price</Typography>
 									</Grid>
 									<Grid item xs={6}>
-										<Typography>GHC {product.price}</Typography>
+										<Typography>GH¢ {product.price}</Typography>
 									</Grid>
 								</Grid>
 							</ListItem>

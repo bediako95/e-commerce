@@ -140,7 +140,7 @@ const CartScreen = () => {
 											</TableCell>
 
 											{/*Price cell */}
-											<TableCell align="right">GHC{item.price}</TableCell>
+											<TableCell align="right">GH¢{item.price}</TableCell>
 											<TableCell align="right">
 												<Button
 													variant="contained"
@@ -163,7 +163,7 @@ const CartScreen = () => {
 								<ListItem>
 									<Typography variant="h2">
 										Subtotal ( {cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
-										items):GHC{" "}
+										items):GH¢{" "}
 										{cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
 									</Typography>
 								</ListItem>

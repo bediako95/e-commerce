@@ -11,7 +11,6 @@ import {
 import Layout from "../components/Layout";
 
 import useStyle from "../utils/style";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useContext } from "react";
@@ -29,6 +28,7 @@ const Shipping = () => {
 		control,
 		formState: { errors },
 		setValue,
+		getValues,
 	} = useForm();
 
 	//use enqueueSnackbar to show snackbar on the screen and the closeSnackbar vice versa
@@ -42,6 +42,8 @@ const Shipping = () => {
 		userInfor,
 		cart: { shippingAddress },
 	} = state;
+
+	const { location } = shippingAddress;
 
 	//checking the existence of the user's information
 	//redirecting user to shipping screen
@@ -71,11 +73,42 @@ const Shipping = () => {
 				city,
 				postalCode,
 				country,
+				location,
 			})
 		);
 
 		//redirecting user
 		router.push("/payment"); //if redirect is null, then direct user to home screen
+	};
+
+	//location button handler
+	const chooseLocationHandler = () => {
+		const fullName = getValues("fullName");
+		const address = getValues("address");
+		const city = getValues("city");
+		const postalCod = getValues("postalCode");
+		const country = getValues("country");
+
+		//executing the reducer
+		dispatch({
+			type: "SAVE_SHIPPING_ADDRESS",
+			payload: { fullName, address, city, postalCode, country },
+		});
+		//setting the cookies
+		Cookies.set(
+			"shippingAddress",
+			JSON.stringify({
+				fullName,
+				address,
+				city,
+				postalCode,
+				country,
+				location,
+			})
+		);
+
+		//redirect user to map page
+		router.push("/map");
 	};
 
 	return (
@@ -248,6 +281,21 @@ const Shipping = () => {
 								)}
 							></Controller>
 						</ListItem>
+
+						{/*location/ map  button */}
+						<ListItem>
+							<Button
+								variant="contained"
+								type="button"
+								onClick={chooseLocationHandler}
+							>
+								Choose on map
+							</Button>
+							<Typography>
+								{/*location.lat && `${location.lat}, ${location.lat}`*/}
+							</Typography>
+						</ListItem>
+
 						<ListItem>
 							<Button
 								variant="contained"

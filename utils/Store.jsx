@@ -94,6 +94,18 @@ function reducer(state, action) {
 				cart: { ...state.cart, shippingAddress: action.payload },
 			};
 		}
+		case "SAVE_SHIPPING_ADDRESS_MAP_LOCATION":
+			//returning current location(state of user) and updating user's location
+			return {
+				...state,
+				cart: {
+					...state.cart,
+					shippingAddress: {
+						...state.cart.shippingAddress,
+						location: action.payload,
+					},
+				},
+			};
 		default:
 			return state;
 	}

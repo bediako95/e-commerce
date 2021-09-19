@@ -62,7 +62,7 @@ function reducer(state, action) {
 	}
 }
 
-function Order(params) {
+function Order({ params }) {
 	const orderId = params.id;
 	const classes = useStyle();
 	const router = useRouter();
@@ -151,6 +151,14 @@ function Order(params) {
 									{shippingAddress.city},{shippingAddress.postalCode},{""},
 									{shippingAddress.country}
 								</ListItem>
+								{/*Status of delivery*/}
+
+								<ListItem>
+									Status:
+									{isDelivered
+										? `delivered at ${deliveredAt}`
+										: "not delivered"}
+								</ListItem>
 							</List>
 						</Card>
 
@@ -165,6 +173,11 @@ function Order(params) {
 								</ListItem>
 
 								<ListItem>{paymentMethod}</ListItem>
+								{/*Status of Payment*/}
+								<ListItem>
+									Status:
+									{isPaid ? `paid at ${paidAt}` : "not paid yet"}
+								</ListItem>
 							</List>
 						</Card>
 
@@ -252,7 +265,7 @@ function Order(params) {
 
 										{/*RHS*/}
 										<Grid item xs={6}>
-											<Typography align="right">GHC {itemsPrice}</Typography>
+											<Typography align="right">GH¢ {itemsPrice}</Typography>
 										</Grid>
 									</Grid>
 								</ListItem>
@@ -267,7 +280,7 @@ function Order(params) {
 
 										{/*RHS*/}
 										<Grid item xs={6}>
-											<Typography align="right">GHC {taxPrice}</Typography>
+											<Typography align="right">GH¢ {taxPrice}</Typography>
 										</Grid>
 									</Grid>
 								</ListItem>
@@ -282,7 +295,7 @@ function Order(params) {
 
 										{/*RHS*/}
 										<Grid item xs={6}>
-											<Typography align="right">GHC {shippingPrice}</Typography>
+											<Typography align="right">GH¢ {shippingPrice}</Typography>
 										</Grid>
 									</Grid>
 								</ListItem>
@@ -300,7 +313,7 @@ function Order(params) {
 										{/*RHS*/}
 										<Grid item xs={6}>
 											<Typography align="right">
-												<strong>GHC {totalPrice}</strong>
+												<strong>GH¢ {totalPrice}</strong>
 											</Typography>
 										</Grid>
 									</Grid>
@@ -315,7 +328,7 @@ function Order(params) {
 }
 
 //This function helps us fetch data from the backened with the aid of the id included in the url
-export async function getServerSideProps(params) {
+export async function getServerSideProps({ params }) {
 	return {
 		props: { params },
 	};

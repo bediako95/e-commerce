@@ -22,6 +22,8 @@ import { Controller, useForm } from "react-hook-form";
 import { ErrorSharp } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
 import Cookies from "js-cookie";
+import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const Login = () => {
 	//form validation
@@ -37,6 +39,14 @@ const Login = () => {
 	const { userInfor } = state;
 	const router = useRouter();
 	const { redirect } = router.query; //  login?redirect=/shipping.. redirect variable contains shipping
+
+	//state management of toggle functionality
+	const [PasswordVisible, setPasswordVisible] = useState(false);
+
+	//function to enable toggle functionality
+	const showPassword = () => {
+		setPasswordVisible(!PasswordVisible);
+	};
 
 	//checking the existence of the user's information
 	//redirecting user to shipping screen
@@ -99,24 +109,26 @@ const Login = () => {
 									pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
 								}}
 								render={({ field }) => (
-									<TextField
-										variant="outlined"
-										fullWidth
-										id="email"
-										label="Email"
-										inputProps={{ type: "email" }}
-										error={Boolean(errors.email)}
-										//check if email has pattern error
-										helperText={
-											errors.email
-												? errors.email.type === "pattern"
-													? "Email is not valid"
-													: "email is required"
-												: ""
-										}
-										//The onChange below allow us to set a new email in the email field
-										{...field}
-									></TextField>
+									<>
+										<TextField
+											variant="outlined"
+											fullWidth
+											id="email"
+											label="Email"
+											inputProps={{ type: "email" }}
+											error={Boolean(errors.email)}
+											//check if email has pattern error
+											helperText={
+												errors.email
+													? errors.email.type === "pattern"
+														? "Email is not valid"
+														: "email is required"
+													: ""
+											}
+											//The onChange below allow us to set a new email in the email field
+											{...field}
+										></TextField>
+									</>
 								)}
 							></Controller>
 						</ListItem>
@@ -131,24 +143,39 @@ const Login = () => {
 									minLength: 6,
 								}}
 								render={({ field }) => (
-									<TextField
-										variant="outlined"
-										fullWidth
-										id="password"
-										label="Password"
-										inputProps={{ type: "password" }}
-										error={Boolean(errors.password)}
-										//check if email has pattern error
-										helperText={
-											errors.password
-												? errors.password.type === "minLength"
-													? "Minimum length of password should be 6"
-													: "Password is required"
-												: ""
-										}
-										//The onChange below allow us to set a new email in the email field
-										{...field}
-									></TextField>
+									//Textfield for our password and toggle button
+									<>
+										<TextField
+											variant="outlined"
+											fullWidth
+											id="password"
+											label="Password"
+											inputProps={{
+												//tenary operation to hide password or make it visible
+												type: PasswordVisible ? "password" : "text",
+											}}
+											error={Boolean(errors.password)}
+											//check if email has pattern error
+											helperText={
+												errors.password
+													? errors.password.type === "minLength"
+														? "Minimum length of password should be 6"
+														: "Password is required"
+													: ""
+											}
+											//The onChange below allow us to set a new email in the email field
+											{...field}
+										></TextField>
+
+										<Button className={classes.toggle} onClick={showPassword}>
+											{/**Tenary operation to show which toggle button to be displayed */}
+											{PasswordVisible ? (
+												<RemoveRedEyeIcon />
+											) : (
+												<VisibilityOffIcon />
+											)}
+										</Button>
+									</>
 								)}
 							></Controller>
 						</ListItem>

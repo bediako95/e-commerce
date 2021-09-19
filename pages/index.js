@@ -21,6 +21,8 @@ import { useRouter } from "next/dist/client/router";
 import { Store } from "../utils/Store";
 import StarIcon from "@material-ui/icons/Star";
 import Rating from "../components/Rating";
+import ImageSlider from "../components/ImageSlider";
+import slide_data from "../components/SliderData";
 
 export default function Home(props) {
 	const { state, dispatch } = useContext(Store);
@@ -47,8 +49,10 @@ export default function Home(props) {
 
 	return (
 		<Layout>
+			<ImageSlider slides={slide_data} />{" "}
+			{/* Passing the image data into thr slider and passing it as props in the ImageSlide page*/}
 			<div>
-				<h1>Products</h1>
+				<h1>Featured Products</h1>
 				<Grid container spacing={3}>
 					{products.map((product) => (
 						<Grid item md={2} key={product.name}>
@@ -74,7 +78,7 @@ export default function Home(props) {
 								></Rating>
 
 								<CardActions>
-									<Typography>GHC{product.price}</Typography>
+									<Typography>GH¢{product.price}</Typography>
 
 									<Button
 										size="small"
@@ -89,6 +93,46 @@ export default function Home(props) {
 					))}
 				</Grid>
 			</div>
+			<h1>Home Accessories</h1>
+			<Grid container spacing={3}>
+				{products.map((product) => (
+					<Grid item md={2} key={product.name}>
+						<Card>
+							<NextLink href={`/products/${product.slug}`} passHref>
+								{/*The above converts the cardactionarea into an anchor  */}
+								<CardActionArea>
+									{/*Anything in this is clickable*/}
+									<CardMedia
+										component="img"
+										image={product.image}
+										title={product.name}
+									></CardMedia>
+
+									<CardContent>
+										<Typography>{product.name}</Typography>
+									</CardContent>
+								</CardActionArea>
+							</NextLink>
+							<Rating
+								rating={product.rating}
+								numReviews={product.numReviews}
+							></Rating>
+
+							<CardActions>
+								<Typography>GH¢{product.price}</Typography>
+
+								<Button
+									size="small"
+									color="primary"
+									onClick={() => addTocartHandler(product)}
+								>
+									Add to Cart
+								</Button>
+							</CardActions>
+						</Card>
+					</Grid>
+				))}
+			</Grid>
 		</Layout>
 	);
 }

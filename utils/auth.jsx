@@ -1,6 +1,5 @@
 // function for user authentiaction
 import jwt from "jsonwebtoken";
-import decode from "jsonwebtoken/decode";
 
 //defining signToken function
 
@@ -41,4 +40,13 @@ const isAuth = async (req, res, next) => {
 	}
 };
 
-export { signToken, isAuth };
+//Admin
+const isAdmin = async (req, res, next) => {
+	if (req.user.isAdmin) {
+		next();
+	} else {
+		res.status(401).send({ message: "User is not admin" });
+	}
+};
+
+export { signToken, isAuth, isAdmin };
